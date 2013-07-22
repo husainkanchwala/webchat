@@ -19,9 +19,6 @@
 		socket.on('print',function(data){
 			$j('#area').append(data+'\n');			
 		});
-		socket.on('update',function(name){
-			
-		});
 		$j(function(){
 			$j('#button').click(function(){
 				var str = $j('#chat').val();
