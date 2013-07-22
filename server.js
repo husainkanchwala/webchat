@@ -14,6 +14,9 @@ io.sockets.on('connection',function(socket){
 		socket.emit('reply','welcome ',name+'<br/>');
 		socket.broadcast.emit('reply',name,' is connected'+'<br/>');
 	});
+	socket.on('msg',function(data){
+		socket.broadcast.emit('print',socket.users+' : '+data);
+	});
 	socket.on('disconnect',function(){
 		
 	});

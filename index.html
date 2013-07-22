@@ -1,5 +1,6 @@
 <html>
 	<body>
+		<textarea name="chat" id="chat"></textarea>
 		<textarea name="area" id="area"></textarea>
 		<input type="submit" name="button" value="send" id="button" />
 	</body>
@@ -7,15 +8,26 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js">
 	</script>
 	<script>
+		var $j = jQuery.noConflict();
 		var socket = io.connect('http://localhost:8080');
 		socket.on('connect',function(){
 			socket.emit('adduser',prompt("Whats your name"));
 		});
 		socket.on('reply',function(data,name){
-			
+			$j('#area').append(data+name+'\n');
+		});
+		socket.on('print',function(data){
+			$j('#area').append(data+'\n');			
 		});
 		socket.on('update',function(name){
 			
+		});
+		$j(function(){
+			$j('#button').click(function(){
+				var str = $j('#chat').val();
+				$j('#chat').val('');
+				socket.emit('msg',str);
+			});
 		});
 	</script>
 	
