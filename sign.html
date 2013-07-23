@@ -6,9 +6,10 @@
 		var $j = jQuery.noConflict();
 		var socket = io.connect('http://localhost:8080');
 		socket.on('forward',function(){
+			$j('#form').submit();
 		});
 		$j(function(){
-			$j('#sin').submit(function(){
+			$j('#sin').click(function(){
 				if(!$j('#name').val() || !$j('#passwd').val() ){
 					alert('Empty username or password');
 				}
@@ -27,8 +28,8 @@
 	<form id="form" action="index.html" >
 		<input type="text" name="username" id="name" /><br/>
 		<input type="text" name="passwd" id="passwd" /><br/>
-		<input type="submit" name="sin" value="sign-in" id="sin" style="background-color: #1E90FF; " />
-		<input type="submit" name="siu" value="sign-up" id="siu" style="background-color: #1E90F4; " />
+		<input type="button" name="sin" value="sign-in" id="sin" style="background-color: #1E90FF; " />
+		<input type="button" name="siu" value="sign-up" id="siu" style="background-color: #1E90F4; " />
 	</form>	
 	</body>
 </html>
