@@ -2,12 +2,16 @@ var express = require('express'),
 app = express(),
 server = require('http').createServer(app),
 io = require('socket.io').listen(server),
-users = {};
+users = {},
+redis = require('redis').createClient();
 server.listen(8080);
 app.get('/',function(req,res){
-	res.sendfile( __dirname + '/index.html');
+	res.sendfile( __dirname + '/sign.html');
 });
 io.sockets.on('connection',function(socket){
+	socket.on('validate',function(user,pass){
+
+	});
 	socket.on('adduser',function(name){
 		socket.users = name;
 		console.log(socket.users);
