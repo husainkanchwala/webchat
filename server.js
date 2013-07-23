@@ -8,6 +8,9 @@ server.listen(8080);
 app.get('/',function(req,res){
 	res.sendfile( __dirname + '/sign.html');
 });
+app.get('/index',function(req,res){
+	res.sendfile( __dirname + '/index.html');
+});
 io.sockets.on('connection',function(socket){
 	socket.on('validate',function(user,pass){
 		redis.hget('users',user,function(err,status){
