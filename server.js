@@ -10,7 +10,22 @@ app.get('/',function(req,res){
 });
 io.sockets.on('connection',function(socket){
 	socket.on('validate',function(user,pass){
+		redis.hget('users',user,function(err,status){
+			if(err) throw err;
+			//console.log(status); done
+			if(status){
+				if(pass === status){
+					//console.log('aaaaaaaaaaaa'); done
+					//login, route to index.html
+					socket.emit('forward');
+				}else{
+					//invalid password
+				}
 
+			}else{
+				//invalid username
+			}
+		});
 	});
 	socket.on('adduser',function(name){
 		socket.users = name;
