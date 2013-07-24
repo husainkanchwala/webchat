@@ -30,7 +30,8 @@
 				}
 			});
 			$j('#siu').click(function(){
-				socket.emit('newuser');
+				$j('#form').attr('action','sign-up.html');
+				$j('#form').submit();
 			});
 		});
 	</script>

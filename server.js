@@ -31,6 +31,20 @@ io.sockets.on('connection',function(socket){
 			}
 		});
 	});
+	socket.on('check',function(name){
+		redis.hget('users',name,function(err,status){
+			if(err) throw err;
+			if(status){
+				socket.emit('tell');
+			}
+		})
+	});
+	socket.on('newuser',function(name,pass){
+		redis.hset('users',name,pass,function(err,status){
+			if(err) throw err;
+			socket.emit('forward');
+		})
+	});
 	socket.on('adduser',function(name){
 		socket.users = name;
 		console.log(socket.users);

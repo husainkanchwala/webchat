@@ -1,0 +1,55 @@
+<html>
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js">
+	</script>
+	<body>
+		<form id="form" action="index.html" ></form>
+		<input type="text" name="username" id="name"/><br/>
+		<input type="password" name="passwd" id="passwd" /><br/>
+		<input type="password" name="passwdcon" id="passwdcon" /><br/>
+		<input type="button" name="siu" value="sign-up" id="siu" style="background-color: #1E90F4; " />	
+		<div id="d1"></div>
+	</body>
+	<script>
+		var $j = jQuery.noConflict();
+		var socket = io.connect('http://localhost:8080');
+		$j(function(){
+			
+			$j('#siu').click(function(){
+				if(!$j('#name').val() || !$j('#passwd').val() || !$j('#passwdcon').val() ){
+					alert('Empty username or password');
+				}
+				else{
+					var user = $j('#name').val();
+					var passwd = $j('#passwdcon').val();
+					var passwrd = $j('#passwd').val();
+					if( passwd === passwrd){
+						socket.emit('newuser',user,passwd);
+					}else{
+						$j('#passwdcon').val('');
+					}
+					socket.emit('validate',user,passwrd);
+				}
+			});
+
+			$j('#name').blur(function(){
+				var name = $j('#name').val();
+				socket.emit('check',name);	
+			});
+
+			$j('#name').click(function(){
+				$j('#d1').text('');
+			});
+		});
+		
+		socket.on('tell',function(val){
+			$j('#d1').text('NOT AVAILABLE USER NAME');
+		});
+
+		socket.on('forward',function(){
+			$j('#form').submit();
+		});
+
+	</script>
+	
+</html>
