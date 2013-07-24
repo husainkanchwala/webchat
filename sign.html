@@ -8,6 +8,16 @@
 		socket.on('forward',function(){
 			$j('#form').submit();
 		});
+		socket.on('wrong-user-id',function(){
+			$j('#d1').text('INVALID USER ID');
+			$j('#name').val('');
+			$j('#passwd').val('');
+		});
+		socket.on('wrong-password',function(){
+			$j('#d1').text('INVALID PASSWORD');
+			$j('#name').val('');
+			$j('#passwd').val('');
+		});
 		$j(function(){
 			$j('#sin').click(function(){
 				if(!$j('#name').val() || !$j('#passwd').val() ){
@@ -25,11 +35,11 @@
 		});
 	</script>
 	<body>
-	<form id="form" action="index.html" >
+		<form id="form" action="index.html" ></form>
 		<input type="text" name="username" id="name" /><br/>
 		<input type="text" name="passwd" id="passwd" /><br/>
 		<input type="button" name="sin" value="sign-in" id="sin" style="background-color: #1E90FF; " />
-		<input type="button" name="siu" value="sign-up" id="siu" style="background-color: #1E90F4; " />
-	</form>	
+		<input type="button" name="siu" value="sign-up" id="siu" style="background-color: #1E90F4; " />	
+		<div id="d1"></div>
 	</body>
 </html>

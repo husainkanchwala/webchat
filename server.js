@@ -5,11 +5,11 @@ io = require('socket.io').listen(server),
 users = {},
 redis = require('redis').createClient();
 server.listen(8080);
+app.use(express.bodyParser());
+app.use(app.router);
+app.use(express.static(__dirname + '/'));
 app.get('/',function(req,res){
 	res.sendfile( __dirname + '/sign.html');
-});
-app.get('/index',function(req,res){
-	res.sendfile( __dirname + '/index.html');
 });
 io.sockets.on('connection',function(socket){
 	socket.on('validate',function(user,pass){
@@ -18,15 +18,16 @@ io.sockets.on('connection',function(socket){
 			//console.log(status); done
 			if(status){
 				if(pass === status){
-					//console.log('aaaaaaaaaaaa'); done
 					//login, route to index.html
 					socket.emit('forward');
 				}else{
 					//invalid password
+					socket.emit('wrong-password');
 				}
 
 			}else{
 				//invalid username
+				socket.emit('wrong-user-id');
 			}
 		});
 	});
