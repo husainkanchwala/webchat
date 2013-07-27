@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
 	"name": "laukikchatapp2",
+=======
+	"name": "laukik",
+>>>>>>> 89fe632ef208ab7de9d065ae38fa026b9191a84d
 	"ver" : "0.0.1",
 	"dependencies" : {
 		"express" : "3.0.0",
