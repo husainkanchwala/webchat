@@ -7,14 +7,16 @@
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js">
 	</script>
+	<script src="/carhartl-jquery-cookie-fedc4cb/jquery.cookie.js" ></script>
 	<script>
 		var $j = jQuery.noConflict();
 		var socket = io.connect('http://localhost:8080');
 		socket.on('connect',function(){
-			socket.emit('adduser',prompt("Whats your name"));
+			var name = $j.cookie('user');
+			socket.emit('adduser',name);
 		});
-		socket.on('reply',function(data,name){
-			$j('#area').append(data+name+'\n');
+		socket.on('reply',function(name,data){
+			$j('#area').append( name + data +'\n');
 		});
 		socket.on('print',function(data){
 			$j('#area').append(data+'\n');			
@@ -23,7 +25,9 @@
 			$j('#button').click(function(){
 				var str = $j('#chat').val();
 				$j('#chat').val('');
-				socket.emit('msg',str);
+				var name = $j.cookie('user');
+				$j('#area').append(name + ' : ' + str +'\n');	
+				socket.emit('msg',name,str);
 			});
 		});
 	</script>

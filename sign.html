@@ -1,10 +1,28 @@
 <html>
+	<body>
+		<form id="form" action="index.html" >
+		<input type="text" name="username" id="name" /><br/>
+		<input type="password" name="passwd" id="passwd" /><br/>
+		<input type="button" name="sin" value="sign-in" id="sin" style="background-color: #1E90FF; " />
+		<input type="button" name="siu" value="sign-up" id="siu" style="background-color: #1E90F4; " />	
+		</form>
+		<div id="d1"></div>
+	</body>
 	<script src="/socket.io/socket.io.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js">
-	</script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+	<script src="/carhartl-jquery-cookie-fedc4cb/jquery.cookie.js" ></script>
 	<script>
+
 		var $j = jQuery.noConflict();
 		var socket = io.connect('http://localhost:8080');
+		socket.on('connect',function(){
+			var name = $j.cookie('user');
+			if(name){
+				$j('#name').val(name);
+				$j('#passwd').val('default');
+				$j('#form').submit();	
+			}
+		});
 		socket.on('forward',function(){
 			$j('#form').submit();
 		});
@@ -15,7 +33,6 @@
 		});
 		socket.on('wrong-password',function(){
 			$j('#d1').text('INVALID PASSWORD');
-			$j('#name').val('');
 			$j('#passwd').val('');
 		});
 		$j(function(){
@@ -35,12 +52,4 @@
 			});
 		});
 	</script>
-	<body>
-		<form id="form" action="index.html" ></form>
-		<input type="text" name="username" id="name" /><br/>
-		<input type="text" name="passwd" id="passwd" /><br/>
-		<input type="button" name="sin" value="sign-in" id="sin" style="background-color: #1E90FF; " />
-		<input type="button" name="siu" value="sign-up" id="siu" style="background-color: #1E90F4; " />	
-		<div id="d1"></div>
-	</body>
 </html>
