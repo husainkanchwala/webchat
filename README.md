@@ -11,3 +11,7 @@ then, install modules
 
   npm install -d
 
+also you will require 
+  
+    jquery.cookie.js
+    
