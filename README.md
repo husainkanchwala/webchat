@@ -1,4 +1,4 @@
-chatapp2
+webchat
 ========
 
 chat app using node.js, express.js, socket.io and redis as database
@@ -15,3 +15,9 @@ also you will require
   
     jquery.cookie.js
     
+In order to run it first install redis database and then run server.js using
+
+	redis-server
+
+	node server.js
+
