@@ -63,15 +63,17 @@ io.sockets.on('connection',function(socket){
 	});
 	socket.on('adduser',function(name){
 		console.log(name);
+		var url;
 		redis.hget('picture',name,function(err,status){
 			if(err) throw err;
 			if(status){
+				url = status;
 				console.log(status);
 				socket.emit('photo',status);
 			}
+			socket.emit('reply','welcome ',name);
+			socket.broadcast.emit('another',url,name + ' is connected.');
 		});
-		socket.emit('reply','welcome ',name);
-		socket.broadcast.emit('reply',name,' is connected'+'<br/>');
 	});
 	socket.on('msg',function(name,data){
 		redis.hget('picture',name,function(err,status){
