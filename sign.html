@@ -18,6 +18,7 @@
 		socket.on('connect',function(){
 			var name = $j.cookie('user');
 			if(name){
+				///////////////////
 				$j('#name').val(name);
 				$j('#passwd').val('default');
 				$j('#form').submit();	
