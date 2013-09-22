@@ -4,8 +4,9 @@ server = require('http').createServer(app),
 io = require('socket.io').listen(server),
 users = {},
 redis = require('redis').createClient();
+var path = require('path');
 server.listen(8080);
-app.use(express.bodyParser());
+app.use(express.bodyParser({ keepExtensions: true,uploadDir: __dirname + '/upload'}));
 app.use(app.router);
 app.use(express.static(__dirname + '/'));
 app.use(express.cookieParser());
@@ -15,6 +16,16 @@ app.get('/',function(req,res){
 app.get('/index.html',function(req,res){
 	res.cookie('user',req.query.username,{httpOnly:false});
 	res.sendfile(__dirname+'/index.html');
+});
+app.post('/upload', function(req, res) {
+ 	var val = [];
+ 	var str = req.files.image.path;
+ 	var target = str.replace('/home/laukik/webchat','');
+ 	val[0] = req.param('username');
+ 	redis.hset('picture',val[0],target,function(err,status){
+				if(err) throw err;
+	});
+ 	res.sendfile( __dirname + '/sign.html');
 });
 io.sockets.on('connection',function(socket){
 	socket.on('validate',function(user,pass){
@@ -52,11 +63,23 @@ io.sockets.on('connection',function(socket){
 	});
 	socket.on('adduser',function(name){
 		console.log(name);
-		socket.emit('reply','welcome ',name +'<br/>');
+		redis.hget('picture',name,function(err,status){
+			if(err) throw err;
+			if(status){
+				console.log(status);
+				socket.emit('photo',status);
+			}
+		});
+		socket.emit('reply','welcome ',name);
 		socket.broadcast.emit('reply',name,' is connected'+'<br/>');
 	});
 	socket.on('msg',function(name,data){
-		socket.broadcast.emit('print', name + ' : '+data);
+		redis.hget('picture',name,function(err,status){
+			if(err) throw err;
+			if(status){
+				socket.broadcast.emit('print', status,data);
+			}
+		});
 	});
 	socket.on('disconnect',function(){
 		
