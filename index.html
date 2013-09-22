@@ -32,6 +32,12 @@
 			$j('#photo').attr("src",url);
 			img = url;
 		});
+		socket.on('another',function(url,data){
+			var y = $j(document.createElement('img')).attr('src',url).attr('height',40).attr('width',40);
+			var x = $j(document.createElement('textarea')).attr('value',data);
+			y.appendTo('#data');
+			x.appendTo('#data').after('<br />');
+		});
 		$j(function(){
 			$j('#button').click(function(){
 				var str = $j('#chat').val();
