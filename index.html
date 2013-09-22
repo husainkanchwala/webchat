@@ -1,6 +1,8 @@
 <html>
-	<body>
-		<textarea name="area" id="area" style="height: 256px;width:504px;"></textarea><br/>
+	<body id="body">
+		<div id ="cap"></div>
+		<img id="photo" width="200" height="200">
+		<form id="data"></form>
 		<textarea name="chat" id="chat" style="height: 40px;width:504px;"></textarea>
 		<input type="submit" name="button" value="send" id="button"/>
 	</body>
@@ -9,6 +11,7 @@
 	</script>
 	<script src="/carhartl-jquery-cookie-fedc4cb/jquery.cookie.js" ></script>
 	<script>
+		var img;
 		var $j = jQuery.noConflict();
 		var socket = io.connect('http://localhost:8080');
 		socket.on('connect',function(){
@@ -16,20 +19,30 @@
 			socket.emit('adduser',name);
 		});
 		socket.on('reply',function(name,data){
-			$j('#area').append( name + data +'\n');
+			var str = name + ' ' + data;
+			$j('#cap').append(document.createTextNode( str ));
 		});
-		socket.on('print',function(data){
-			$j('#area').append(data+'\n');			
+		socket.on('print',function(url,data){
+			var y = $j(document.createElement('img')).attr('src',url).attr('height',40).attr('width',40);
+			var x = $j(document.createElement('textarea')).attr('value',data);
+			y.appendTo('#data');
+			x.appendTo('#data').after('<br />');
+		});
+		socket.on('photo',function(url){
+			$j('#photo').attr("src",url);
+			img = url;
 		});
 		$j(function(){
 			$j('#button').click(function(){
 				var str = $j('#chat').val();
-				$j('#chat').val('');
 				var name = $j.cookie('user');
-				$j('#area').append(name + ' : ' + str +'\n');	
+				var y = $j(document.createElement('img')).attr('src',img).attr('height',40).attr('width',40);
+				var x = $j(document.createElement('textarea')).attr('value',str);
+				y.appendTo('#data');
+				x.appendTo('#data').after('<br />');
+				$j('#chat').val('');
 				socket.emit('msg',name,str);
 			});
 		});
 	</script>
-	
 </html>
