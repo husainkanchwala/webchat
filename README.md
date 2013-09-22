@@ -21,3 +21,5 @@ In order to run it first install redis database and then run server.js using
 
 	node server.js
 
+todo:
+	support for forgot password and default image
