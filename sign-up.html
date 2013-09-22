@@ -3,12 +3,14 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js">
 	</script>
 	<body>
-		<form id="form" action="sign.html" ></form>
+		<form action="/upload" enctype="multipart/form-data" method="post" id="form">
 		<input type="text" name="username" id="name"/><br/>
 		<input type="password" name="passwd" id="passwd" /><br/>
 		<input type="password" name="passwdcon" id="passwdcon" /><br/>
 		<input type="button" name="siu" value="sign-up" id="siu" style="background-color: #1E90F4; " />	
 		<div id="d1"></div>
+		<input type="file" name="image"/>
+		</form>
 	</body>
 	<script>
 		var $j = jQuery.noConflict();
